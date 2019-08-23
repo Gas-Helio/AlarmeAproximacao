@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ALPX</string>
+    <string name="endecoip">IP:PORTA</string>
+    <string name="button_connect">Connectar</string>
+    <string name="on">Desativar</string>
+    <string name="off">Ativar</string>
+</resources>
