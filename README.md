@@ -1,6 +1,6 @@
 # CRUD-Biblioteca
 
-Sistema de alarme por aproximação
+Sistema de alarme por aproximação. 
 Aplicativo Android que faz uso do sensor de proximidade do aparelho.
 É enviado um sinal para o servidor que estará sendo executado no notebook.
 Protocolo de Comunicação: Sockets.
