@@ -27,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
     TextView data, ProximitySensor;
     SensorManager mySensorManager;
     Sensor myProximitySensor;
+    Send send;
+    EditText host, port;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,15 +47,16 @@ public class MainActivity extends AppCompatActivity {
                     myProximitySensor,
                     SensorManager.SENSOR_DELAY_NORMAL);
         }
+        host = findViewById(R.id.ip_porta);
     }
 
-    public void sendMessage(View view){
-        Intent intent = new Intent(this, DisplayMessageActivity.class);
-        EditText editText = (EditText) findViewById(R.id.editText);
-        String message = editText.getText().toString();
-        intent.putExtra(EXTRA_MESSAGE, message);
-        startActivity(intent);
-    }
+//    public void sendMessage(View view){
+//        Intent intent = new Intent(this, DisplayMessageActivity.class);
+//        EditText editText = (EditText) findViewById(R.id.editText);
+//        String message = editText.getText().toString();
+//        intent.putExtra(EXTRA_MESSAGE, message);
+//        startActivity(intent);
+//    }
 
     SensorEventListener proximitySensorEventListener
             = new SensorEventListener() {
@@ -74,5 +78,15 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void conectarServidor(View v) {
+        String host = this.host.getText().toString();
+        String ip = host.split(":")[0];
+        Integer port = Integer.parseInt(host.split(":")[1]);
+        Log.d("logado", host.split(":")[1]);
+        send = new Send(ip, port);
+        send.execute();
+
+    }
 
 }
