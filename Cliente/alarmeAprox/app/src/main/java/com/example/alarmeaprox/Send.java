@@ -2,21 +2,20 @@ package com.example.alarmeaprox;
 
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.TextView;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
+import java.io.DataOutputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
-public class Send extends AsyncTask<Void, Void, String> {
+public class Send extends AsyncTask<String, Void, Void> {
 
-    String dstAddress;
-    int dstPort;
+    private String dstAddress;
+    private int dstPort;
     String response = "";
-    TextView textResponse;
-    Socket socket;
+    private Socket socket;
 
     Send(String addr, int port) {
         this.dstAddress = addr;
@@ -24,10 +23,25 @@ public class Send extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected String doInBackground(Void... arg0) {
+    protected Void doInBackground(String... strings) {
         try {
 
-            socket = new Socket(this.dstAddress, this.dstPort);
+            this.socket = new Socket(this.dstAddress, this.dstPort);
+
+            OutputStream outStream = socket.getOutputStream();
+
+            OutputStream os = socket.getOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(os);
+
+            Integer cont = 0;
+            while (!isCancelled()) {
+                TimeUnit.SECONDS.sleep(3);
+                // Gerando Arraylist com os valores do sensor
+                ArrayList<String> mandar = new ArrayList<String>();
+                mandar.add("Olaaaaa");
+
+                oos.writeObject(mandar);
+            }
 
             Log.d("foi", "deu certo");
         } catch (Exception e) {

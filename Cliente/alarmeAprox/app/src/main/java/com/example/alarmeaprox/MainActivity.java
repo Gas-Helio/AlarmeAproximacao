@@ -50,30 +50,23 @@ public class MainActivity extends AppCompatActivity {
         host = findViewById(R.id.ip_porta);
     }
 
-//    public void sendMessage(View view){
-//        Intent intent = new Intent(this, DisplayMessageActivity.class);
-//        EditText editText = (EditText) findViewById(R.id.editText);
-//        String message = editText.getText().toString();
-//        intent.putExtra(EXTRA_MESSAGE, message);
-//        startActivity(intent);
-//    }
-
     SensorEventListener proximitySensorEventListener
             = new SensorEventListener() {
         @Override
         public void onAccuracyChanged(Sensor sensor, int accuracy) {
             // TODO Auto-generated method stub
         }
+        
         @Override
         public void onSensorChanged(SensorEvent event) {
             // TODO Auto-generated method stub
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] == 0) {
                     data.setText("Near");
-//                    Log.d("sensor", "longe");
+
                 } else {
                     data.setText("Away");
-//                    Log.d("sensor", "p/erto");
+
                 }
             }
         }
