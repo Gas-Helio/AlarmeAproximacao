@@ -1,28 +1,73 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package serveralpx;
+
+/**
+ *
+ * @author heliojunior
+ */
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+
 
 public class Server {
-    public static void main(String[] args) throws IOException {
-        try{
-            ServerSocket servidor = new ServerSocket(8000);
-            System.out.println("Servidor ouvindo a porta 8000");
-            ArrayList<Thread> slotes = new ArrayList<Thread>();
-            
-            while(true){
-                Socket cliente = servidor.accept();
+    private ServerSocket server;
+    private Socket client;
+    private BufferedReader in;
+    private String line;
+    
+    public Server(){
+        line = "";
+        listenSocket();
+    }
 
-                if(slotes.isEmpty()){
-                    HandlerThread novo = new HandlerThread(cliente);
-                    Thread c1 = new Thread(novo);
-                    c1.start();
-                    slotes.add(c1);
-                }
-            }
-        
-        }catch(Exception e){
-
+    public void listenSocket() {
+        // Colocar o porto em escuta (Porto = 4500)
+        try {
+            server = new ServerSocket(12345);
+        } catch (IOException e) {
+            System.out.println("Could not listen on port 12345");
+            System.exit(-1);
         }
+        System.out.println("Listen on Port 4500");
+        
+        
+        //Aceitar cliente
+        try {
+            client = server.accept();
+        } catch (IOException e) {
+            System.out.println("Accept failed: 4500");
+            System.exit(-1);
+        }
+        System.out.println("Client Accepted");
+
+        //Preparar Buffers
+        try {
+            in = new BufferedReader(new InputStreamReader(client.getInputStream()));
+        } catch (IOException e) {
+            System.out.println("Read failed");
+            System.exit(-1);
+        }
+        System.out.println("Buffereds Accepted");
+
+        //Colocar o socket à escuta, à espera de mensagens do cliente
+//        while (true) {
+            try {
+                //Read message from client
+                line = in.readLine();
+                //Print message from client
+                System.out.println("Message from client: " + line);
+            } catch (IOException e) {
+                System.out.println("Read failed: " + e.toString());
+                System.exit(-1);
+            }
+//        }
     }
 }
