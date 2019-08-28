@@ -22,6 +22,15 @@ public class Send extends AsyncTask<String, Void, Void> {
         this.dstPort = port;
     }
 
+    public boolean testeSinal(String s) {
+        try {
+            this.socket = new Socket(this.dstAddress, this.dstPort);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     @Override
     protected Void doInBackground(String... strings) {
         try {

@@ -9,9 +9,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.net.Socket;
 
 public class DisplayMessageActivity extends AppCompatActivity implements SensorEventListener {
 
@@ -20,17 +23,27 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
     private SensorManager mSensorManager;
     private Sensor mProximity;
     private static final int SENSOR_SENSITIVITY = 4;
+    private static Socket socket;
+    private static Send send;
+//    private static ClientConnection cC;
+    private static String ip;
+    private static int port;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_message);
 
-//        Intent intent = getIntent();
-//        String message = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
+        Intent intent = getIntent();
+        String host = intent.getStringExtra(MainActivity.EXTRA_MESSAGE);
 
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        ip = host.split(":")[0];
+        port = Integer.parseInt(host.split(":")[1]);
+
+        Log.d("logado", host.split(":")[1]);
 
         textView = findViewById(R.id.button);
         textView.setText(R.string.off);
@@ -56,7 +69,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
     @Override
     protected void onPause() {
         super.onPause();
-        mSensorManager.unregisterListener(this);
+//        mSensorManager.unregisterListener(this);
     }
 
     @Override
@@ -65,6 +78,11 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
             if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
                 //near
                 Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
+//                cC.sendMessage("Perto");
+                ClientConnection cC = new ClientConnection(ip, port);
+
+                cC.execute();
+
             } else {
                 //far
                 Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();

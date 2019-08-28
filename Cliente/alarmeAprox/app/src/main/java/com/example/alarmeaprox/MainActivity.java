@@ -16,70 +16,44 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.widget.TextView;
 import android.hardware.SensorEventListener;
+import android.widget.Toast;
 
 
+import java.io.IOException;
+import java.net.Socket;
 import java.time.Instant;
 
 public class MainActivity extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE = "com.example.myfirstapp.MESSAGE";
-    MaskEditUtil mEU = new MaskEditUtil();
-    TextView data, ProximitySensor;
-    SensorManager mySensorManager;
-    Sensor myProximitySensor;
-    Send send;
-    EditText host, port;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        data = (TextView) findViewById(R.id.data);
-
-        mySensorManager = (SensorManager) getSystemService(
-                Context.SENSOR_SERVICE);
-        myProximitySensor = mySensorManager.getDefaultSensor(
-                Sensor.TYPE_PROXIMITY);
-        if (myProximitySensor == null) {
-            ProximitySensor.setText("No Proximity Sensor!");
-        } else {
-            mySensorManager.registerListener(proximitySensorEventListener,
-                    myProximitySensor,
-                    SensorManager.SENSOR_DELAY_NORMAL);
-        }
-        host = findViewById(R.id.ip_porta);
     }
 
-    SensorEventListener proximitySensorEventListener
-            = new SensorEventListener() {
-        @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            // TODO Auto-generated method stub
-        }
-        
-        @Override
-        public void onSensorChanged(SensorEvent event) {
-            // TODO Auto-generated method stub
-            if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-                if (event.values[0] == 0) {
-                    data.setText("Near");
+    public void convectorSalvidor(View v) {
+        EditText editText = (EditText) findViewById(R.id.ip_porta);
+        String message = editText.getText().toString();
+        try {
+            String ip = message.split(":")[0];
+            Integer port = Integer.parseInt(message.split(":")[1]);
 
-                } else {
-                    data.setText("Away");
-
-                }
+//            Send sd = new Send(ip,port);
+            try {
+                ClientConnection Cc = new ClientConnection(ip, port);
+                Cc.execute();
+//                Cc.sendMessage("Ola");
+                Intent intent = new Intent(this, DisplayMessageActivity.class);
+                intent.putExtra(EXTRA_MESSAGE, message);
+                startActivity(intent);
+            } catch (Exception e){
+                Toast.makeText(getApplicationContext(), "Falha ao conectar", Toast.LENGTH_SHORT).show();
             }
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), "Entrada invalida", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
-    };
-
-    public void conectarServidor(View v) {
-        String host = this.host.getText().toString();
-        String ip = host.split(":")[0];
-        Integer port = Integer.parseInt(host.split(":")[1]);
-        Log.d("logado", host.split(":")[1]);
-        send = new Send(ip, port);
-        send.execute();
-
     }
-
 }

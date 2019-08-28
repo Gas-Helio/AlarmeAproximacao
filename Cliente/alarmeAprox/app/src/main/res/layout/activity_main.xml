@@ -37,7 +37,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginRight="16dp"
-        android:onClick="conectarServidor"
+        android:onClick="convectorSalvidor"
         android:text="@string/button_connect"
         app:layout_constraintBaseline_toBaselineOf="@+id/ip_porta"
         app:layout_constraintEnd_toEndOf="parent"
