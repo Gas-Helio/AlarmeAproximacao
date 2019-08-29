@@ -1,4 +1,4 @@
-# CRUD-Biblioteca
+# ALPX Alarme por Aproximação
 
 Sistema de alarme por aproximação. 
 Aplicativo Android que faz uso do sensor de proximidade do aparelho.
@@ -6,7 +6,7 @@ Aplicativo Android que faz uso do sensor de proximidade do aparelho.
 Protocolo de Comunicação: Sockets.
 
 ## Iniciando o sistema
-
+Para iniciar o servidor
 ### Instalação
 
 ### Execução
