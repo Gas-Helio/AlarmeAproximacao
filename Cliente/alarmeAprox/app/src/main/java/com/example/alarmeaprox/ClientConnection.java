@@ -61,7 +61,7 @@ public class ClientConnection extends AsyncTask<Void, Void, Void> {
                 ObjectOutputStream oos = new ObjectOutputStream(os);
 
                 while (!isCancelled()) {
-                    TimeUnit.SECONDS.sleep(3);
+                    TimeUnit.SECONDS.sleep(0);
                     // Gerando Arraylist com os valores do sensor
                     ArrayList<String> mandar = new ArrayList<String>();
                     mandar.add(mensagem);

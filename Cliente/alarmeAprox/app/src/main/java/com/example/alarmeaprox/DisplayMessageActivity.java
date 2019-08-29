@@ -47,12 +47,11 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
         textView = findViewById(R.id.button);
         textView.setText(R.string.off);
         onf = 0;
-
+        cC = new ClientConnection(ip, port);
+        cC.execute();
     }
 
     public void conectar(View v){
-        cC = new ClientConnection(ip, port);
-        cC.execute();
         if (onf == 0){
             textView.setText(R.string.on);
             onf = 1;
@@ -62,7 +61,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
         }
     }
 
-    public void onoff(View view) {
+    public static void onoff() {
         if (onf == 0){
             textView.setText(R.string.on);
             onf = 1;
@@ -86,19 +85,20 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-//        if (onf == 1) {
+        if (onf == 1) {
             if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
                 if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
                     //near
                     Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
                     try {
                         cC.mensagem = "perto";
+                        onoff();
                     } catch (Exception e) {
                         Toast.makeText(getApplicationContext(), "Erro ao enviar para o servidor", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
-//        }
+        }
     }
 
     @Override

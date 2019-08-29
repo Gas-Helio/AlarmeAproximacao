@@ -66,7 +66,14 @@ public class Server {
             ObjectInputStream ois = new ObjectInputStream(is);
             while(true){
                 ArrayList<String> al = (ArrayList)ois.readObject();
-                System.out.println(al.get(0));
+                if("perto".equals(al.get(0))){
+                    System.out.println(al.get(0));
+                    new TelaInicial().setVisible(true);
+                    break;
+                }
+                // if("perto".equals(al.get(0))){
+                //     new TelaInicial();
+                // }
             }
         } catch (Exception e) {
             e.getStackTrace();
