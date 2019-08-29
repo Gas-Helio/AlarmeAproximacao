@@ -42,8 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
 //            Send sd = new Send(ip,port);
             try {
-                ClientConnection Cc = new ClientConnection(ip, port);
-                Cc.execute();
+//                ClientConnection Cc = new ClientConnection(ip, port);
+//                Cc.execute();
 //                Cc.sendMessage("Ola");
                 Intent intent = new Intent(this, DisplayMessageActivity.class);
                 intent.putExtra(EXTRA_MESSAGE, message);

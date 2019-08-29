@@ -28,6 +28,7 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
 //    private static ClientConnection cC;
     private static String ip;
     private static int port;
+    private static ClientConnection cC;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +43,6 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
 
         ip = host.split(":")[0];
         port = Integer.parseInt(host.split(":")[1]);
-
-        Log.d("logado", host.split(":")[1]);
 
         textView = findViewById(R.id.button);
         textView.setText(R.string.off);
@@ -74,18 +73,18 @@ public class DisplayMessageActivity extends AppCompatActivity implements SensorE
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
-            if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
-                //near
-                Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
-//                cC.sendMessage("Perto");
-                ClientConnection cC = new ClientConnection(ip, port);
-
-                cC.execute();
-
-            } else {
-                //far
-                Toast.makeText(getApplicationContext(), "far", Toast.LENGTH_SHORT).show();
+        if (onf == 1) {
+            if (event.sensor.getType() == Sensor.TYPE_PROXIMITY) {
+                if (event.values[0] >= -SENSOR_SENSITIVITY && event.values[0] <= SENSOR_SENSITIVITY) {
+                    //near
+                    Toast.makeText(getApplicationContext(), "near", Toast.LENGTH_SHORT).show();
+                    try {
+                        cC = new ClientConnection(ip, port);
+                        cC.execute();
+                    } catch (Exception e) {
+                        Toast.makeText(getApplicationContext(), "Erro ao enviar para o servidor", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         }
     }

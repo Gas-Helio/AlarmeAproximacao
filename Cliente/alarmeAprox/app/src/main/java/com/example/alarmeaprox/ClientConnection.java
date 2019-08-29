@@ -1,7 +1,9 @@
 package com.example.alarmeaprox;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,7 +18,7 @@ public class ClientConnection extends AsyncTask<Void, Void, Void> {
     private static String IP = "[IP]";
     private static int PORT = 4500;
     private Socket socket = null;
-    private PrintWriter out = null;
+    private PrintStream out = null;
     private BufferedReader in = null;
 
     public ClientConnection(String ip, int port){
@@ -24,12 +26,9 @@ public class ClientConnection extends AsyncTask<Void, Void, Void> {
         PORT = port;
     }
 
-//    @Override
-//    protected Object doInBackground(Object[] params) {
-//
-//    }
-
     public boolean sendMessage(String message){
+        Log.d("Enviando", "Menssagem");
+        Log.d("Enviando", message);
         out.println(message);
         return true;
     }
@@ -45,16 +44,19 @@ public class ClientConnection extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... voids) {
         try {
+            Log.d("IP", IP);
+            Log.d("PORT", String.valueOf(PORT));
             socket = new Socket(IP, PORT);
-            PrintStream out = new PrintStream(socket.getOutputStream());
-            Log.d("ENVIADO ", "ads");
-            out.println("teste");
+            out = new PrintStream(socket.getOutputStream());
+            Log.d("Criado ", "Socket");
+            sendMessage("Alarme");
+//            out.println("teste");
 //            closeAll();
         }
         catch (IOException e) {
             Log.d("DEBUG ERROR", e.toString());
         } finally {
-            closeAll();
+//            closeAll();
         }
         return null;
     }

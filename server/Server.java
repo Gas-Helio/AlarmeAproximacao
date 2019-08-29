@@ -36,14 +36,14 @@ public class Server {
             System.out.println("Could not listen on port 12345");
             System.exit(-1);
         }
-        System.out.println("Listen on Port 4500");
+        System.out.println("Listen on Port 12345");
         
         
         //Aceitar cliente
         try {
             client = server.accept();
         } catch (IOException e) {
-            System.out.println("Accept failed: 4500");
+            System.out.println("Accept failed: 12345");
             System.exit(-1);
         }
         System.out.println("Client Accepted");
