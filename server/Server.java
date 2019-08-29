@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package serveralpx;
 
 /**
  *
@@ -15,6 +14,9 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
 
 
 public class Server {
@@ -47,6 +49,7 @@ public class Server {
             System.exit(-1);
         }
         System.out.println("Client Accepted");
+        System.out.println("IP: " + client.getInetAddress().getHostAddress() + " Conectado");
 
         //Preparar Buffers
         try {
@@ -57,17 +60,29 @@ public class Server {
         }
         System.out.println("Buffereds Accepted");
 
-        //Colocar o socket à escuta, à espera de mensagens do cliente
-//        while (true) {
-            try {
-                //Read message from client
-                line = in.readLine();
-                //Print message from client
-                System.out.println("Message from client: " + line);
-            } catch (IOException e) {
-                System.out.println("Read failed: " + e.toString());
-                System.exit(-1);
+        InputStream is;
+        try {
+            is = this.client.getInputStream();
+            ObjectInputStream ois = new ObjectInputStream(is);
+            while(true){
+                ArrayList<String> al = (ArrayList)ois.readObject();
+                System.out.println(al.get(0));
             }
-//        }
+        } catch (Exception e) {
+            e.getStackTrace();
+        }
+
+        //Colocar o socket à escuta, à espera de mensagens do cliente
+    //    while (true) {
+    //         try {
+    //             //Read message from client
+    //             line = in.readLine();
+    //             //Print message from client
+    //             System.out.println("Message from client: " + line);
+    //         } catch (IOException e) {
+    //             System.out.println("Read failed: " + e.toString());
+    //             System.exit(-1);
+    //         }
+    //    }
     }
 }
